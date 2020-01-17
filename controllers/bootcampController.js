@@ -9,9 +9,12 @@ const Bootcamp = require('../models/Bootcamp');
 exports.getBootcamps = async (req, res, next) => {
   try {
     const bootcamps = await Bootcamp.find();
-    res
-      .status(200)
-      .json({ success: true, msg: 'show all bootcamps!', data: bootcamps });
+    res.status(200).json({
+      success: true,
+      total: bootcamps.length,
+      msg: 'show all bootcamps!',
+      data: bootcamps
+    });
   } catch (error) {
     res.status(400).json({ success: false });
   }
@@ -104,17 +107,16 @@ exports.deleteBootcamp = async (req, res, next) => {
 
 exports.bulkDeleteBootcamp = async (req, res, next) => {
   try {
-    console.log(req.body.id);
-    let arr = [...req.body.id];
-    let res = [];
-    arr.forEach(async element => {
+    let result = [];
+    for (const element of req.body.id) {
       let bootcamp = await Bootcamp.findByIdAndDelete(element);
-      res.push(bootcamp);
-    });
+      if (!bootcamp) continue;
+      result.push(bootcamp);
+    }
     res.status(200).json({
       success: true,
-      msg: `Deleted bootcamp ${req.params.id}`,
-      data: res
+      msg: `Toal Deleted bootcamp number:${result.length}`,
+      data: result
     });
   } catch (error) {
     res.status(400).json({ success: false, err: error });
