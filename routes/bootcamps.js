@@ -4,13 +4,15 @@ const {
   getBootcamp,
   createBootcamp,
   updateBootcamp,
-  deleteBootcamp
+  deleteBootcamp,
+  bulkDeleteBootcamp
 } = require('../controllers/bootcampController');
 
 router
   .route('/')
   .get(getBootcamps)
-  .post(createBootcamp);
+  .post(createBootcamp)
+  .delete(bulkDeleteBootcamp);
 router
   .route('/:id')
   .get(getBootcamp)
