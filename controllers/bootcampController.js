@@ -9,6 +9,8 @@ const Bootcamp = require('../models/Bootcamp');
 **/
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
   const bootcamps = await Bootcamp.find();
+  if (bootcamps.length === 0)
+    return res.status(200).json({ status: true, message: 'No data' });
   res.status(200).json({
     success: true,
     total: bootcamps.length,
